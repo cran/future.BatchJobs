@@ -213,7 +213,7 @@ in many different ways depending on which strategy is used.
 There are various types of synchronous and asynchronous futures to
 choose from in the <a href="http://cran.r-project.org/package=future">future</a> package.</p>
 
-<p>This package, <a href="https://github.com/HenrikBengtsson/future.BatchJobs/">future.BatchJobs</a>, provides a type of futures that
+<p>This package, <a href="http://cran.r-project.org/package=future.BatchJobs">future.BatchJobs</a>, provides a type of futures that
 utilizes the <a href="http://cran.r-project.org/package=BatchJobs">BatchJobs</a> package.  This means that <em>any</em> type of
 backend that the BatchJobs package supports can be used as a future.
 More specifically, future.BatchJobs will allow you or users of your
@@ -304,7 +304,6 @@ BatchJobs backends.</p>
 <table><thead>
 <tr>
 <th align="left">Backend</th>
-<th align="left">OSes</th>
 <th align="left">Description</th>
 <th align="left">Alternative in future package</th>
 </tr>
@@ -313,11 +312,9 @@ BatchJobs backends.</p>
 <td align="left"><em>generic:</em></td>
 <td align="left"></td>
 <td align="left"></td>
-<td align="left"></td>
 </tr>
 <tr>
 <td align="left"><code>batchjobs_custom</code></td>
-<td align="left">all</td>
 <td align="left">Uses custom BatchJobs configuration script files, e.g. <code>.BatchJobs.R</code></td>
 <td align="left">N/A</td>
 </tr>
@@ -325,57 +322,45 @@ BatchJobs backends.</p>
 <td align="left"><em>predefined:</em></td>
 <td align="left"></td>
 <td align="left"></td>
-<td align="left"></td>
 </tr>
 <tr>
 <td align="left"><code>batchjobs_torque</code></td>
-<td align="left">all</td>
 <td align="left">Futures are evaluated via a <a href="https://en.wikipedia.org/wiki/TORQUE">TORQUE</a> / PBS job scheduler</td>
 <td align="left">N/A</td>
 </tr>
 <tr>
 <td align="left"><code>batchjobs_slurm</code></td>
-<td align="left">all</td>
 <td align="left">Futures are evaluated via a <a href="https://en.wikipedia.org/wiki/Slurm_Workload_Manager">Slurm</a> job scheduler</td>
 <td align="left">N/A</td>
 </tr>
 <tr>
 <td align="left"><code>batchjobs_sge</code></td>
-<td align="left">all</td>
 <td align="left">Futures are evaluated via a <a href="https://en.wikipedia.org/wiki/Oracle_Grid_Engine">Sun/Oracle Grid Engine (SGE)</a> job scheduler</td>
 <td align="left">N/A</td>
 </tr>
 <tr>
 <td align="left"><code>batchjobs_lsf</code></td>
-<td align="left">all</td>
 <td align="left">Futures are evaluated via a <a href="https://en.wikipedia.org/wiki/Platform_LSF">Load Sharing Facility (LSF)</a> job scheduler</td>
 <td align="left">N/A</td>
 </tr>
 <tr>
 <td align="left"><code>batchjobs_openlava</code></td>
-<td align="left">all</td>
 <td align="left">Futures are evaluated via an <a href="https://en.wikipedia.org/wiki/OpenLava">OpenLava</a> job scheduler</td>
 <td align="left">N/A</td>
 </tr>
 <tr>
 <td align="left"><code>batchjobs_interactive</code></td>
-<td align="left">all</td>
 <td align="left">synchronous evaluation in the calling R environment</td>
 <td align="left"><code>plan(transparent)</code></td>
 </tr>
 <tr>
 <td align="left"><code>batchjobs_local</code></td>
-<td align="left">all</td>
 <td align="left">synchronous evaluation in a separate R process (on current machine)</td>
 <td align="left"><code>plan(cluster, workers=&quot;localhost&quot;)</code></td>
 </tr>
-<tr>
-<td align="left"><code>batchjobs_multicore</code></td>
-<td align="left">not Windows</td>
-<td align="left">asynchronous background R sessions (on current machine)</td>
-<td align="left"><code>plan(multisession)</code> (sic!)</td>
-</tr>
 </tbody></table>
+
+<p>In addition the the above, there is also <code>batchjobs_multicore</code> (which on Windows and Solaris falls back to <code>batchjobs_local</code>), which runs BatchJobs tasks asynchronously in background R sessions (sic!) on the current machine.  We \emph{advice not to use} this and instead use <code>multisession</code> of the <a href="http://cran.r-project.org/package=future">future</a> package.  For details, see <code>help(&quot;batchjobs_multicore&quot;)</code>.</p>
 
 <h3>Examples</h3>
 
@@ -446,7 +431,7 @@ automatically located and loaded when doing:</p>
 set of Mandelbrot planes.  The demo does not assume anything about
 what type of futures are used.
 <em>The user has full control of how futures are evaluated</em>.
-For instance, to use <code>local</code> BatchJobs futures, run the demo as:</p>
+For instance, to use local BatchJobs futures, run the demo as:</p>
 
 <pre><code class="r">library(&quot;future.BatchJobs&quot;)
 plan(batchjobs_local)
