@@ -253,7 +253,7 @@ library(&quot;listenv&quot;)
 ## cluster using BatchJobs.  The second level of futures
 ## should be using multiprocessing, where the number of
 ## parallel processes is automatically decided based on
-## what the cluster allots to each compute node.
+## what the cluster grants to each compute node.
 plan(list(batchjobs_custom, multiprocess))
 
 ## Find all samples (one FASTQ file per sample)
@@ -360,7 +360,7 @@ BatchJobs backends.</p>
 </tr>
 </tbody></table>
 
-<p>In addition the the above, there is also <code>batchjobs_multicore</code> (which on Windows and Solaris falls back to <code>batchjobs_local</code>), which runs BatchJobs tasks asynchronously in background R sessions (sic!) on the current machine.  We \emph{advice not to use} this and instead use <code>multisession</code> of the <a href="http://cran.r-project.org/package=future">future</a> package.  For details, see <code>help(&quot;batchjobs_multicore&quot;)</code>.</p>
+<p>In addition to the above, there is also <code>batchjobs_multicore</code> (which on Windows and Solaris falls back to <code>batchjobs_local</code>), which runs BatchJobs tasks asynchronously in background R sessions (sic!) on the current machine.  We <em>advise to not use</em> this and instead use <code>multisession</code> of the <a href="http://cran.r-project.org/package=future">future</a> package.  For details, see <code>help(&quot;batchjobs_multicore&quot;)</code>.</p>
 
 <h3>Examples</h3>
 
@@ -368,7 +368,7 @@ BatchJobs backends.</p>
 
 <h3>Example: A .BatchJobs.R file using local BatchJobs</h3>
 
-<p>The most general way of configuring BatchJobs via a <code>.BatchJobs.R</code> file.
+<p>The most general way of configuring BatchJobs is via a <code>.BatchJobs.R</code> file.
 This file should be located in the current directory or in the user&#39;s
 home directory.  For example, as an alternative to <code>batchjobs_local</code>,
 we can manually configure local BatchJobs futures a <code>.BatchJobs.R</code> file
@@ -387,41 +387,60 @@ that contains</p>
 <pre><code class="r">&gt; plan(batchjobs_custom, pathname=&quot;./.BatchJobs.R&quot;)
 </code></pre>
 
-<p>This follow the naming convention set up by the BatchJobs package.</p>
+<p>This follows the naming convention set up by the BatchJobs package.</p>
 
-<h3>Example: A .BatchJobs.*.brew template file for TORQUE / PBS</h3>
+<h3>Example: A .BatchJobs.*.tmpl template file for TORQUE / PBS</h3>
 
 <p>To configure BatchJobs for job schedulers we need to setup a template
 file that is used to generate the script used by the scheduler.
 This is what a template file for TORQUE / PBS may look like:</p>
 
-<pre><code class="sh">#PBS -N &lt;%= job.name %&gt;
+<pre><code class="sh">## Job name:
+#PBS -N &lt;%= job.name %&gt;
 
-## merge standard error and output
+## Merge standard error and output:
 #PBS -j oe
+
+## Resource parameters:
+&lt;% for (name in names(resources)) { %&gt;
+#PBS -l &lt;%= name %&gt;=&lt;%= resources[[name]] %&gt;
+&lt;% } %&gt;
 
 ## Run R:
 R CMD BATCH --no-save --no-restore &quot;&lt;%= rscript %&gt;&quot; /dev/stdout
 </code></pre>
 
-<p>If this template is saved to file <code>.BatchJobs.torque.brew</code> in the
+<p>If this template is saved to file <code>.BatchJobs.torque.tmpl</code> in the
 working directory or the user&#39;s home directory, then it will be
 automatically located and loaded when doing:</p>
 
 <pre><code class="r">&gt; plan(batchjobs_torque)
 </code></pre>
 
-<p>To specify this template file explicitly, one can use</p>
+<p>Resource parameters can be specified via argument <code>resources</code> which should be a named list and is passed as is to the template file.  For example, to request that each job would get alloted 12 cores (one a single machine) and up to  5 GiB of RAM, use:</p>
 
-<pre><code class="r">&gt; plan(batchjobs_torque, pathname=&quot;./.BatchJobs.torque.brew&quot;)
+<pre><code class="r">&gt; plan(batchjobs_torque, resources=list(nodes=&quot;1:ppn=12&quot;, vmem=&quot;5gb&quot;))
 </code></pre>
 
-<p>A similar filename format is used for the other types of job schedulers supported.  For instance, for Slurm the template file should be named <code>.BatchJobs.slurm.brew</code> in order for</p>
+<p>To specify the <code>resources</code> argument at the same time as using nested future strategies, one can use <code>tweak()</code> to tweak the default arguments.  For instance,</p>
+
+<pre><code class="r">plan(list(
+  tweak(batchjobs_torque, resources=list(nodes=&quot;1:ppn=12&quot;, vmem=&quot;5gb&quot;)),
+  multiprocess
+  ))
+</code></pre>
+
+<p>will cause the first level of futures to be submitted via the TORQUE job scheduler requesting 12 cores and 5 GiB of RAM per job.  The second level of futures will be evaluated using multiprocessing using the 12 cores given to each job by the scheduler.</p>
+
+<p>A similar filename format is used for the other types of job schedulers supported.  For instance, for Slurm the template file should be named <code>.BatchJobs.slurm.tmpl</code> in order for</p>
 
 <pre><code class="r">&gt; plan(batchjobs_slurm)
 </code></pre>
 
-<p>to locate the file automatically.</p>
+<p>to locate the file automatically.  To specify this template file explicitly, use argument <code>pathname</code>, e.g.</p>
+
+<pre><code class="r">&gt; plan(batchjobs_slurm, pathname=&quot;./.BatchJobs.slurm.tmpl&quot;)
+</code></pre>
 
 <p>Note that it is still possible to use a <code>.BatchJobs.R</code> and load the template file using a standard BatchJobs approach for maximum control.  For further details and examples on how to configure BatchJobs per se, see the <a href="https://github.com/tudo-r/BatchJobs/wiki/Configuration">BatchJobs configuration</a> wiki page.</p>
 
