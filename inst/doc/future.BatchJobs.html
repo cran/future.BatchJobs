@@ -206,15 +206,15 @@ hr {
 
 <h2>Introduction</h2>
 
-<p>The <a href="http://cran.r-project.org/package=future">future</a> package provides a generic API for using futures in R.
+<p>The <a href="https://cran.r-project.org/package=future">future</a> package provides a generic API for using futures in R.
 A future is a simple yet powerful mechanism to evaluate an R expression
 and retrieve its value at some point in time.  Futures can be resolved
 in many different ways depending on which strategy is used.
 There are various types of synchronous and asynchronous futures to
-choose from in the <a href="http://cran.r-project.org/package=future">future</a> package.</p>
+choose from in the <a href="https://cran.r-project.org/package=future">future</a> package.</p>
 
-<p>This package, <a href="http://cran.r-project.org/package=future.BatchJobs">future.BatchJobs</a>, provides a type of futures that
-utilizes the <a href="http://cran.r-project.org/package=BatchJobs">BatchJobs</a> package.  This means that <em>any</em> type of
+<p>This package, <a href="https://cran.r-project.org/package=future.BatchJobs">future.BatchJobs</a>, provides a type of futures that
+utilizes the <a href="https://cran.r-project.org/package=BatchJobs">BatchJobs</a> package.  This means that <em>any</em> type of
 backend that the BatchJobs package supports can be used as a future.
 More specifically, future.BatchJobs will allow you or users of your
 package to leverage the compute power of high-performance computing
@@ -293,7 +293,7 @@ bams &lt;- as.list(bams)
 </code></pre>
 
 <p>For an introduction as well as full details on how to use futures,
-please consult the package vignettes of the <a href="http://cran.r-project.org/package=future">future</a> package.</p>
+please consult the package vignettes of the <a href="https://cran.r-project.org/package=future">future</a> package.</p>
 
 <h2>Choosing BatchJobs backend</h2>
 
@@ -360,7 +360,7 @@ BatchJobs backends.</p>
 </tr>
 </tbody></table>
 
-<p>In addition to the above, there is also <code>batchjobs_multicore</code> (which on Windows and Solaris falls back to <code>batchjobs_local</code>), which runs BatchJobs tasks asynchronously in background R sessions (sic!) on the current machine.  We <em>advise to not use</em> this and instead use <code>multisession</code> of the <a href="http://cran.r-project.org/package=future">future</a> package.  For details, see <code>help(&quot;batchjobs_multicore&quot;)</code>.</p>
+<p>In addition to the above, there is also <code>batchjobs_multicore</code> (which on Windows and Solaris falls back to <code>batchjobs_local</code>), which runs BatchJobs tasks asynchronously in background R sessions (sic!) on the current machine.  We <em>advise to not use</em> this and instead use <code>multisession</code> of the <a href="https://cran.r-project.org/package=future">future</a> package.  For details, see <code>help(&quot;batchjobs_multicore&quot;)</code>.</p>
 
 <h3>Examples</h3>
 
@@ -417,7 +417,7 @@ automatically located and loaded when doing:</p>
 <pre><code class="r">&gt; plan(batchjobs_torque)
 </code></pre>
 
-<p>Resource parameters can be specified via argument <code>resources</code> which should be a named list and is passed as is to the template file.  For example, to request that each job would get alloted 12 cores (one a single machine) and up to  5 GiB of RAM, use:</p>
+<p>Resource parameters can be specified via argument <code>resources</code> which should be a named list and is passed as is to the template file.  For example, to request that each job would get alloted 12 cores (one a single machine) and up to  5 GiB of memory, use:</p>
 
 <pre><code class="r">&gt; plan(batchjobs_torque, resources=list(nodes=&quot;1:ppn=12&quot;, vmem=&quot;5gb&quot;))
 </code></pre>
@@ -427,10 +427,10 @@ automatically located and loaded when doing:</p>
 <pre><code class="r">plan(list(
   tweak(batchjobs_torque, resources=list(nodes=&quot;1:ppn=12&quot;, vmem=&quot;5gb&quot;)),
   multiprocess
-  ))
+))
 </code></pre>
 
-<p>will cause the first level of futures to be submitted via the TORQUE job scheduler requesting 12 cores and 5 GiB of RAM per job.  The second level of futures will be evaluated using multiprocessing using the 12 cores given to each job by the scheduler.</p>
+<p>causes the first level of futures to be submitted via the TORQUE job scheduler requesting 12 cores and 5 GiB of memory per job.  The second level of futures will be evaluated using multiprocessing using the 12 cores given to each job by the scheduler.</p>
 
 <p>A similar filename format is used for the other types of job schedulers supported.  For instance, for Slurm the template file should be named <code>.BatchJobs.slurm.tmpl</code> in order for</p>
 
@@ -446,7 +446,7 @@ automatically located and loaded when doing:</p>
 
 <h2>Demos</h2>
 
-<p>The <a href="http://cran.r-project.org/package=future">future</a> package provides a demo using futures for calculating a
+<p>The <a href="https://cran.r-project.org/package=future">future</a> package provides a demo using futures for calculating a
 set of Mandelbrot planes.  The demo does not assume anything about
 what type of futures are used.
 <em>The user has full control of how futures are evaluated</em>.
