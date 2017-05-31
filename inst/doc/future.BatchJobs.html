@@ -284,12 +284,12 @@ bams &lt;- as.list(bams)
 
 <p>Note that a user who do not have access to a cluster could use the same script processing samples sequentially and chromosomes in parallel on a single machine using:</p>
 
-<pre><code class="r">plan(list(eager, multiprocess))
+<pre><code class="r">plan(list(sequential, multiprocess))
 </code></pre>
 
 <p>or samples in parallel and chromosomes sequentially using:</p>
 
-<pre><code class="r">plan(list(multiprocess, eager))
+<pre><code class="r">plan(list(multiprocess, sequential))
 </code></pre>
 
 <p>For an introduction as well as full details on how to use futures,
