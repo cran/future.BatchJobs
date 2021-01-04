@@ -202,9 +202,13 @@ hr {
 </head>
 
 <body>
+<p><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMTI4IiBoZWlnaHQ9IjIwIiByb2xlPSJpbWciIGFyaWEtbGFiZWw9ImxpZmVjeWNsZTogc3VwZXJzZWRlZCI+PHRpdGxlPmxpZmVjeWNsZTogc3VwZXJzZWRlZDwvdGl0bGU+PGxpbmVhckdyYWRpZW50IGlkPSJzIiB4Mj0iMCIgeTI9IjEwMCUiPjxzdG9wIG9mZnNldD0iMCIgc3RvcC1jb2xvcj0iI2JiYiIgc3RvcC1vcGFjaXR5PSIuMSIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1vcGFjaXR5PSIuMSIvPjwvbGluZWFyR3JhZGllbnQ+PGNsaXBQYXRoIGlkPSJyIj48cmVjdCB3aWR0aD0iMTI4IiBoZWlnaHQ9IjIwIiByeD0iMyIgZmlsbD0iI2ZmZiIvPjwvY2xpcFBhdGg+PGcgY2xpcC1wYXRoPSJ1cmwoI3IpIj48cmVjdCB3aWR0aD0iNTUiIGhlaWdodD0iMjAiIGZpbGw9IiM1NTUiLz48cmVjdCB4PSI1NSIgd2lkdGg9IjczIiBoZWlnaHQ9IjIwIiBmaWxsPSIjMDA3ZWM2Ii8+PHJlY3Qgd2lkdGg9IjEyOCIgaGVpZ2h0PSIyMCIgZmlsbD0idXJsKCNzKSIvPjwvZz48ZyBmaWxsPSIjZmZmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iVmVyZGFuYSxHZW5ldmEsRGVqYVZ1IFNhbnMsc2Fucy1zZXJpZiIgdGV4dC1yZW5kZXJpbmc9Imdlb21ldHJpY1ByZWNpc2lvbiIgZm9udC1zaXplPSIxMTAiPjx0ZXh0IGFyaWEtaGlkZGVuPSJ0cnVlIiB4PSIyODUiIHk9IjE1MCIgZmlsbD0iIzAxMDEwMSIgZmlsbC1vcGFjaXR5PSIuMyIgdHJhbnNmb3JtPSJzY2FsZSguMSkiIHRleHRMZW5ndGg9IjQ1MCI+bGlmZWN5Y2xlPC90ZXh0Pjx0ZXh0IHg9IjI4NSIgeT0iMTQwIiB0cmFuc2Zvcm09InNjYWxlKC4xKSIgZmlsbD0iI2ZmZiIgdGV4dExlbmd0aD0iNDUwIj5saWZlY3ljbGU8L3RleHQ+PHRleHQgYXJpYS1oaWRkZW49InRydWUiIHg9IjkwNSIgeT0iMTUwIiBmaWxsPSIjMDEwMTAxIiBmaWxsLW9wYWNpdHk9Ii4zIiB0cmFuc2Zvcm09InNjYWxlKC4xKSIgdGV4dExlbmd0aD0iNjMwIj5zdXBlcnNlZGVkPC90ZXh0Pjx0ZXh0IHg9IjkwNSIgeT0iMTQwIiB0cmFuc2Zvcm09InNjYWxlKC4xKSIgZmlsbD0iI2ZmZiIgdGV4dExlbmd0aD0iNjMwIj5zdXBlcnNlZGVkPC90ZXh0PjwvZz48L3N2Zz4=" alt="Life cycle: superseded"/></p>
+
 <h1>A Future for BatchJobs</h1>
 
-<p><em>NOTE: The <a href="https://cran.r-project.org/package=BatchJobs">BatchJobs</a> package is deprecated in favor of the <a href="https://cran.r-project.org/package=batchtools">batchtools</a> package. Because of this, it is recommended to use the <a href="https://cran.r-project.org/package=future.batchtools">future.batchtools</a> package instead of this package. This package will only be updated in order for it to be compliant with updates in R and the <a href="https://cran.r-project.org/package=future">future</a> package.</em></p>
+<h2>Deprecation</h2>
+
+<p><em>NOTE: The <a href="https://cran.r-project.org/package=BatchJobs">BatchJobs</a> package is deprecated in favor of the <a href="https://cran.r-project.org/package=batchtools">batchtools</a> package. Because of this, it is recommended to use the <a href="https://cran.r-project.org/package=future.batchtools">future.batchtools</a> package instead of this package. This <a href="https://cran.r-project.org/package=future.BatchJobs">future.BatchJobs</a> package is formally deprecated and will be archive on CRAN.</em></p>
 
 <h2>Introduction</h2>
 
@@ -256,7 +260,7 @@ library(&quot;listenv&quot;)
 ## should be using multiprocessing, where the number of
 ## parallel processes is automatically decided based on
 ## what the cluster grants to each compute node.
-plan(list(batchjobs_custom, multiprocess))
+plan(list(batchjobs_custom, multisession))
 
 ## Find all samples (one FASTQ file per sample)
 fqs &lt;- dir(pattern=&quot;[.]fastq$&quot;)
@@ -286,12 +290,12 @@ bams &lt;- as.list(bams)
 
 <p>Note that a user who do not have access to a cluster could use the same script processing samples sequentially and chromosomes in parallel on a single machine using:</p>
 
-<pre><code class="r">plan(list(sequential, multiprocess))
+<pre><code class="r">plan(list(sequential, multisession))
 </code></pre>
 
 <p>or samples in parallel and chromosomes sequentially using:</p>
 
-<pre><code class="r">plan(list(multiprocess, sequential))
+<pre><code class="r">plan(list(multisession, sequential))
 </code></pre>
 
 <p>For an introduction as well as full details on how to use futures,
@@ -428,7 +432,7 @@ automatically located and loaded when doing:</p>
 
 <pre><code class="r">plan(list(
   tweak(batchjobs_torque, resources=list(nodes=&quot;1:ppn=12&quot;, vmem=&quot;5gb&quot;)),
-  multiprocess
+  multisession
 ))
 </code></pre>
 
@@ -461,7 +465,7 @@ demo(&quot;mandelbrot&quot;, package=&quot;future&quot;, ask=FALSE)
 
 <hr/>
 
-<p>Copyright Henrik Bengtsson, 2015-2018</p>
+<p>Copyright Henrik Bengtsson, 2015-2021</p>
 
 </body>
 
